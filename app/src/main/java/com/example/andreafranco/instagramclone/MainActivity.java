@@ -2,14 +2,18 @@ package com.example.andreafranco.instagramclone;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +23,13 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnKeyListener {
 
     EditText mUsernameEditText, mPasswordEditText;
     TextView mLoginTextView;
-    boolean mSignUpModeActive;
+    ImageView mLogoImageView;
+    ConstraintLayout mBackground;
+    boolean mSignUpModeActive = true;
     private Button mSignUpButton;
 
     @Override
@@ -32,10 +38,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         mUsernameEditText = findViewById(R.id.username_edittext);
         mPasswordEditText = findViewById(R.id.password_edittext);
+        mPasswordEditText.setOnKeyListener(this);
         mSignUpButton = findViewById(R.id.signup_button);
         mLoginTextView = findViewById(R.id.login_textview);
         mLoginTextView.setOnClickListener(this);
-
+        mLogoImageView = findViewById(R.id.logo_imageview);
+        mLogoImageView.setOnClickListener(this);
+        mBackground = findViewById(R.id.background_layout);
+        mBackground.setOnClickListener(this);
         //ParseAnalytics.trackAppOpenedInBackground(getIntent());
     }
 
@@ -90,5 +100,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mLoginTextView.setText("or, Login");
             }
         }
+    }
+
+    @Override
+    public boolean onKey(View view, int i, KeyEvent keyEvent) {
+        if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+            signUpClick(view);
+        }
+        return false;
     }
 }
