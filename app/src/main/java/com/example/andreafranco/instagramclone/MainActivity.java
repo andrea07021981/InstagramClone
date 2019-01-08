@@ -1,7 +1,9 @@
 package com.example.andreafranco.instagramclone;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.input.InputManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -46,7 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLogoImageView.setOnClickListener(this);
         mBackground = findViewById(R.id.background_layout);
         mBackground.setOnClickListener(this);
-        //ParseAnalytics.trackAppOpenedInBackground(getIntent());
+
+        if (ParseUser.getCurrentUser() != null) {
+            showUserList();
+        }
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+
     }
 
     public void signUpClick(View view) {
@@ -65,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void done(ParseException e) {
                         showMessage(e, "Sign Up completed");
+                        showUserList();
                     }
                 });
             } else {
@@ -73,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void done(ParseUser user, ParseException e) {
                         showMessage(e, "Login ok!");
+                        showUserList();
                     }
                 });
             }
@@ -99,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mSignUpButton.setText("Sign Up");
                 mLoginTextView.setText("or, Login");
             }
+        } else if (view.getId() == R.id.logo_imageview || view.getId() == R.id.background_layout) {
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 
@@ -108,5 +120,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             signUpClick(view);
         }
         return false;
+    }
+
+    private void showUserList() {
+        Intent intent = new Intent(this, UserListActivity.class);
+        startActivity(intent);
     }
 }
