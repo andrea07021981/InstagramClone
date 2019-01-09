@@ -1,5 +1,7 @@
 package com.example.andreafranco.instagramclone;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -63,19 +65,23 @@ public class UserListActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.logout) {
-            ParseUser.logOutInBackground(new LogOutCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        //Log out done
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Error logging out: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            logOut();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logOut() {
+        ParseUser.logOutInBackground(new LogOutCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    //Log out done
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error logging out: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -86,5 +92,25 @@ public class UserListActivity extends AppCompatActivity implements AdapterView.O
             intent.putExtra("username", String.valueOf(item));
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+            .setCancelable(false)
+            .setTitle("Info message")
+            .setMessage("Would you like to log out?")
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            })
+            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    logOut();
+                }
+            }).show();
     }
 }
