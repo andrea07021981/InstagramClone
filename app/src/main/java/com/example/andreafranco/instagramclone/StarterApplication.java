@@ -24,7 +24,7 @@ public class StarterApplication extends Application {
         Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                 .applicationId("b3486976d294dd43f7485f3b8dce2871476a8584")
                 .clientKey("95d1aafc41371496e94e5a12b5ba11d13c7d0ee5")
-                .server("http://18.216.160.186:80/parse/") //USER AND PSW ARE user - 0EWYk2udkzNn
+                .server("http://3.16.186.142:80/parse/") //USER AND PSW ARE user - 0EWYk2udkzNn
                 .build()
         );
 
@@ -32,7 +32,7 @@ public class StarterApplication extends Application {
         /**
          * THIS IS USED FOR APPS THAT DON'T REQUIRE A LOGIN PAGE. WITH IT EVERY APP CAN LOGIN AUTOMATICALLY
          */
-         ParseUser.enableAutomaticUser();
+         //ParseUser.enableAutomaticUser();
 
         ParseACL defaultACL = new ParseACL();
         defaultACL.setPublicReadAccess(true);

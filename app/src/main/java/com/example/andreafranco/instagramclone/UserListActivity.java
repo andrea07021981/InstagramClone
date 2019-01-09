@@ -32,7 +32,7 @@ public class UserListActivity extends AppCompatActivity {
         queryUsers.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
-                if (e != null && objects.size() > 0) {
+                if (e == null && objects.size() > 0) {
                     for (ParseUser parseUser : objects) {
                         users.add(parseUser.getUsername());
                     }
