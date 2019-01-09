@@ -33,7 +33,7 @@ public class UserFeedActivity extends AppCompatActivity {
         String username = extras.getString("username");
         if (username != null) {
             setTitle(username + "'s photos");
-            ParseQuery<ParseObject> objectParseQueryImage = new ParseQuery<ParseObject>("Image");
+            ParseQuery<ParseObject> objectParseQueryImage = ParseQuery.getQuery("Image");//Equals to new ParseQuery<ParseObject>("Image");
             objectParseQueryImage.whereEqualTo("username", username);
             objectParseQueryImage.orderByDescending("createdAt");
             objectParseQueryImage.findInBackground(new FindCallback<ParseObject>() {
